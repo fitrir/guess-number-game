@@ -48,6 +48,9 @@
       // Store reference to reset button
       var resetButton = document.getElementById('resetButton');
       
+      // Automatically put the text cursor to input field
+      guessField.focus();
+      
       // Generate a random number between 0 - 100
       var randomNumber = Math.floor(Math.random() * 100);
       
@@ -72,6 +75,8 @@
         
         // Empty the input field after each time value inserted
         guessField.value = '';
+        
+        guessField.focus();
         
         // Each condition for user if he/she is right, wrong, or game over
         if (guessValue === randomNumber) {
@@ -120,6 +125,8 @@
         guessField.disabled = false;
         guessSubmit.disabled = false;
         
+        guessField.focus();
+        
         // Reset button disappears
         resetButton.style.display = 'none';
         
@@ -127,7 +134,6 @@
         for (var i = 0; i < resultArea.length; i++) {
           resultArea[i].textContent = '';
         }
-        
         
         // Generate new random number between 0 - 100
         randomNumber = Math.floor(Math.random() * 100);
