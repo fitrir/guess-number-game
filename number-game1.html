@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    
+    <title>Number Guessing Game</title>
+    
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  </head>
+  
+  <body class="text-center row mt-5">
+    <div class="col-md-6 offset-md-3">
+      
+      <h1 class="my-5">Number Guessing Game</h1>   
+      
+      <p>We have selected a random number between 0 and 100. See if you can guess it in 10 turns or fewer. We'll tell you if your guess was too high or too low.</p>
+      
+      <!-- Input Area -->
+      <div class="form mt-4">
+        <label for="guessField">Enter a guess: </label><input type="text" id="guessField" class="mx-2 px-1" />
+        <input type="submit" value="Submit your guess" id="guessSubmit">
+      </div>
+    
+      <!-- Result Area -->
+      <div class="resultArea my-4">
+        <p id="guesses"></p>
+        <p id="result"></p>
+        <p id="hiLow"></p>
+        <button id="resetButton" style="display:none;">Start a new game</button>
+      </div>
+    </div>
+    
+    
+    <!-- JavaScript goes here -->
+    <script>
+      // Store reference to the form
+      var guessField = document.getElementById('guessField');
+      var guessSubmit = document.getElementById('guessSubmit');
+      
+      // Store reference to the results paragraph
+      var resultArea = document.querySelectorAll('.resultArea p');
+      var guesses = document.getElementById('guesses');
+      var result = document.getElementById('result');
+      var hiLow = document.getElementById('hiLow');
+      
+      // Store reference to reset button
+      var resetButton = document.getElementById('resetButton');
+      
+      // Generate a random number between 0 - 100
+      var randomNumber = Math.floor(Math.random() * 100);
+      
+      // User's attempt to guess is started from attempt 1
+      var guessAttempt = 1;
+      
+      // Add event listener to submit button
+      guessSubmit.addEventListener('click', submitButton);
+      
+      
+      // What happened after submit button is clicked
+      function submitButton() {
+        
+        // Take value from input field
+        var guessValue = Number(guessField.value);
+        
+        // Store and show each user's previous guesses
+        if (guessAttempt === 1) {
+          guesses.textContent = 'Previous guesses: ';
+        }
+        guesses.textContent += guessValue + ' ';
+        
+        // Empty the input field after each time value inserted
+        guessField.value = '';
+        
+        // Each condition for user if he/she is right, wrong, or game over
+        if (guessValue === randomNumber) {
+          result.textContent = 'Congratulation, You got it right!';
+          hiLow.textContent = '';
+          gameOver();
+        } else if (guessAttempt === 10) {
+          result.textContent = 'GAME OVER!';
+          hiLow.textContent = 'The right number is: ' + randomNumber;
+          gameOver();
+        } else {
+          result.textContent = 'WRONG!';
+          if (guessValue < randomNumber) {
+            hiLow.textContent = 'Your guess is too low!';
+          } else if (guessValue > randomNumber) {
+            hiLow.textContent = 'Your guess is too high!';
+          }
+        }
+        
+        // Each time value inserted, add one attempt in total
+        guessAttempt++;
+      }
+      
+      // When user won the game or game over
+      function gameOver() {
+        
+        // Input field and submit button are disabled
+        guessField.disabled = true;
+        guessSubmit.disabled = true;
+        
+        // Reset button appears
+        resetButton.style.display = 'block';
+        resetButton.style.margin = 'auto';
+        
+        // Add event listener to reset button
+        resetButton.addEventListener('click', restartGame);
+      }
+      
+      // When user click reset button
+      function restartGame() {
+        
+        // User's attempt to guess restarted to attempt 1
+        guessAttempt = 1;
+        
+        // Input field and submit button are enabled
+        guessField.disabled = false;
+        guessSubmit.disabled = false;
+        
+        // Reset button disappears
+        resetButton.style.display = 'none';
+        
+        // Empty the result area
+        for (var i = 0; i < resultArea.length; i++) {
+          resultArea[i].textContent = '';
+        }
+        
+        
+        // Generate new random number between 0 - 100
+        randomNumber = Math.floor(Math.random() * 100);
+      }
+          
+      
+    </script>
+  </body>
